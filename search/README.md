@@ -1,4 +1,15 @@
 
+To run this program the following python packages are required:
+numpy, argparse.  They can be installed into your python environment with:
+pip install numpy
+pip install argparse
+
+To run the two problems use:
+python assignment1.py puzzle 
+python assignemtn1.py means-end
+
+An example of the output is given at the bottom of this page for both problems.
+
 Problem 1:
 Considering this as the initial state,
 [4 3 6]
@@ -14,7 +25,8 @@ apply the 3 steps of search for problem  solving (as described in Week 2 slides)
 and indicate the solution path in the  search space.
 
 Let our word consist of a vector of 9 numbers where 0 is reserved for the empty space.
-Let our actions consist of the four principal directions 
+Let our actions consist of moving the empty space (0) in the four principal directions
+where a movement that would take the empthy space outside of the game world has no effect.
 
 Problem 2:
 
@@ -74,3 +86,123 @@ are in the same locations.
 Define the action give for each set of entitys such that:
 give(giver, reciever) will set the holds property of receiver to the holds property of giver and set the holds property of giver to None iff the reciever does not hold an item, the giver does hold an item and the giver and receiver are in the same location.
 
+PROBLEM 1 OUTPUT:
+[[4 3 6]
+ [8 2 7]
+ [5 1 0]]
+ACTION:  (8, 5)
+[[4 3 6]
+ [8 2 0]
+ [5 1 7]]
+ACTION:  (5, 2)
+[[4 3 0]
+ [8 2 6]
+ [5 1 7]]
+ACTION:  (2, 1)
+[[4 0 3]
+ [8 2 6]
+ [5 1 7]]
+ACTION:  (1, 4)
+[[4 2 3]
+ [8 0 6]
+ [5 1 7]]
+ACTION:  (4, 5)
+[[4 2 3]
+ [8 6 0]
+ [5 1 7]]
+ACTION:  (5, 2)
+[[4 2 0]
+ [8 6 3]
+ [5 1 7]]
+ACTION:  (2, 1)
+[[4 0 2]
+ [8 6 3]
+ [5 1 7]]
+ACTION:  (1, 0)
+[[0 4 2]
+ [8 6 3]
+ [5 1 7]]
+ACTION:  (0, 3)
+[[8 4 2]
+ [0 6 3]
+ [5 1 7]]
+ACTION:  (3, 4)
+[[8 4 2]
+ [6 0 3]
+ [5 1 7]]
+ACTION:  (4, 1)
+[[8 0 2]
+ [6 4 3]
+ [5 1 7]]
+ACTION:  (1, 2)
+[[8 2 0]
+ [6 4 3]
+ [5 1 7]]
+ACTION:  (2, 5)
+[[8 2 3]
+ [6 4 0]
+ [5 1 7]]
+ACTION:  (5, 4)
+[[8 2 3]
+ [6 0 4]
+ [5 1 7]]
+ACTION:  (4, 7)
+[[8 2 3]
+ [6 1 4]
+ [5 0 7]]
+ACTION:  (7, 8)
+[[8 2 3]
+ [6 1 4]
+ [5 7 0]]
+ACTION:  (8, 5)
+[[8 2 3]
+ [6 1 0]
+ [5 7 4]]
+ACTION:  (5, 2)
+[[8 2 0]
+ [6 1 3]
+ [5 7 4]]
+ACTION:  (2, 1)
+[[8 0 2]
+ [6 1 3]
+ [5 7 4]]
+ACTION:  (1, 4)
+[[8 1 2]
+ [6 0 3]
+ [5 7 4]]
+ACTION:  (4, 7)
+[[8 1 2]
+ [6 7 3]
+ [5 0 4]]
+ACTION:  (7, 6)
+[[8 1 2]
+ [6 7 3]
+ [0 5 4]]
+ACTION:  (6, 3)
+[[8 1 2]
+ [0 7 3]
+ [6 5 4]]
+ACTION:  (3, 4)
+[[8 1 2]
+ [7 0 3]
+ [6 5 4]]
+
+PROBLEM 2 OUTPUT 
+robot changes kitchen door to opened
+robot moves from living room to kitchen
+robot changes fridge door to opened
+robot changes cupboard door to opened
+robot moves from kitchen to cupboard
+robot takes the glass
+robot moves from cupboard to kitchen
+robot moves from kitchen to living room
+robot gives his object to person
+robot moves from living room to kitchen
+robot moves from kitchen to fridge
+robot takes the soda
+robot moves from fridge to kitchen
+robot changes fridge door to closed
+robot changes cupboard door to closed
+robot moves from kitchen to living room
+robot changes kitchen door to closed
+robot gives his object to glass
