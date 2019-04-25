@@ -7,9 +7,9 @@ pip install numpy
 pip install argparse
 
 <h3>Running the Program</h3>
-To run the two problems use:
-python assignment1.py puzzle 
-python assignemtn1.py means-end
+To run the two problems use:</br>
+python assignment1.py puzzle </br>
+python assignemtn1.py means-end</br>
 
 An example of the output is given at the bottom of this page for both problems.
 
@@ -92,7 +92,7 @@ are in the same locations.
 Define the action give for each set of entitys such that:
 give(giver, reciever) will set the holds property of receiver to the holds property of giver and set the holds property of giver to None iff the reciever does not hold an item, the giver does hold an item and the giver and receiver are in the same location.
 
-PROBLEM 1 OUTPUT:</br>
+<h3>PROBLEM 1 OUTPUT:</h3>
 [[4 3 6]</br>
  [8 2 7]</br>
  [5 1 0]]</br>
@@ -193,7 +193,7 @@ ACTION:  (3, 4)</br>
  [7 0 3]</br>
  [6 5 4]]</br>
 
-PROBLEM 2 OUTPUT </br>
+<h3>PROBLEM 2 OUTPUT </h3>
 robot changes kitchen door to opened</br>
 robot moves from living room to kitchen</br>
 robot changes fridge door to opened</br>
