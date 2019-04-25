@@ -93,123 +93,123 @@ are in the same locations.
 Define the action give for each set of entitys such that:
 give(giver, reciever) will set the holds property of receiver to the holds property of giver and set the holds property of giver to None iff the reciever does not hold an item, the giver does hold an item and the giver and receiver are in the same location.
 
-PROBLEM 1 OUTPUT:
-[[4 3 6]
- [8 2 7]
- [5 1 0]]
-ACTION:  (8, 5)
-[[4 3 6]
- [8 2 0]
- [5 1 7]]
-ACTION:  (5, 2)
-[[4 3 0]
- [8 2 6]
- [5 1 7]]
-ACTION:  (2, 1)
-[[4 0 3]
- [8 2 6]
- [5 1 7]]
-ACTION:  (1, 4)
-[[4 2 3]
- [8 0 6]
- [5 1 7]]
-ACTION:  (4, 5)
-[[4 2 3]
- [8 6 0]
- [5 1 7]]
-ACTION:  (5, 2)
-[[4 2 0]
- [8 6 3]
- [5 1 7]]
-ACTION:  (2, 1)
-[[4 0 2]
- [8 6 3]
- [5 1 7]]
-ACTION:  (1, 0)
-[[0 4 2]
- [8 6 3]
- [5 1 7]]
-ACTION:  (0, 3)
-[[8 4 2]
- [0 6 3]
- [5 1 7]]
-ACTION:  (3, 4)
-[[8 4 2]
- [6 0 3]
- [5 1 7]]
-ACTION:  (4, 1)
-[[8 0 2]
- [6 4 3]
- [5 1 7]]
-ACTION:  (1, 2)
-[[8 2 0]
- [6 4 3]
- [5 1 7]]
-ACTION:  (2, 5)
-[[8 2 3]
- [6 4 0]
- [5 1 7]]
-ACTION:  (5, 4)
-[[8 2 3]
- [6 0 4]
- [5 1 7]]
-ACTION:  (4, 7)
-[[8 2 3]
- [6 1 4]
- [5 0 7]]
-ACTION:  (7, 8)
-[[8 2 3]
- [6 1 4]
- [5 7 0]]
-ACTION:  (8, 5)
-[[8 2 3]
- [6 1 0]
- [5 7 4]]
-ACTION:  (5, 2)
-[[8 2 0]
- [6 1 3]
- [5 7 4]]
-ACTION:  (2, 1)
-[[8 0 2]
- [6 1 3]
- [5 7 4]]
-ACTION:  (1, 4)
-[[8 1 2]
- [6 0 3]
- [5 7 4]]
-ACTION:  (4, 7)
-[[8 1 2]
- [6 7 3]
- [5 0 4]]
-ACTION:  (7, 6)
-[[8 1 2]
- [6 7 3]
- [0 5 4]]
-ACTION:  (6, 3)
-[[8 1 2]
- [0 7 3]
- [6 5 4]]
-ACTION:  (3, 4)
-[[8 1 2]
- [7 0 3]
- [6 5 4]]
+PROBLEM 1 OUTPUT:</br>
+[[4 3 6]</br>
+ [8 2 7]</br>
+ [5 1 0]]</br>
+ACTION:  (8, 5)</br>
+[[4 3 6]</br>
+ [8 2 0]</br>
+ [5 1 7]]</br>
+ACTION:  (5, 2)</br>
+[[4 3 0]</br>
+ [8 2 6]</br>
+ [5 1 7]]</br>
+ACTION:  (2, 1)</br>
+[[4 0 3]</br>
+ [8 2 6]</br>
+ [5 1 7]]</br>
+ACTION:  (1, 4)</br>
+[[4 2 3]</br>
+ [8 0 6]</br>
+ [5 1 7]]</br>
+ACTION:  (4, 5)</br>
+[[4 2 3]</br>
+ [8 6 0]</br>
+ [5 1 7]]</br>
+ACTION:  (5, 2)</br>
+[[4 2 0]</br>
+ [8 6 3]</br>
+ [5 1 7]]</br>
+ACTION:  (2, 1)</br>
+[[4 0 2]</br>
+ [8 6 3]</br>
+ [5 1 7]]</br>
+ACTION:  (1, 0)</br>
+[[0 4 2]</br>
+ [8 6 3]</br>
+ [5 1 7]]</br>
+ACTION:  (0, 3)</br>
+[[8 4 2]</br>
+ [0 6 3]</br>
+ [5 1 7]]</br>
+ACTION:  (3, 4)</br>
+[[8 4 2]</br>
+ [6 0 3]</br>
+ [5 1 7]]</br>
+ACTION:  (4, 1)</br>
+[[8 0 2]</br>
+ [6 4 3]</br>
+ [5 1 7]]</br>
+ACTION:  (1, 2)</br>
+[[8 2 0]</br>
+ [6 4 3]</br>
+ [5 1 7]]</br>
+ACTION:  (2, 5)</br>
+[[8 2 3]</br>
+ [6 4 0]</br>
+ [5 1 7]]</br>
+ACTION:  (5, 4)</br>
+[[8 2 3]</br>
+ [6 0 4]</br>
+ [5 1 7]]</br>
+ACTION:  (4, 7)</br>
+[[8 2 3]</br>
+ [6 1 4]</br>
+ [5 0 7]]</br>
+ACTION:  (7, 8)</br>
+[[8 2 3]</br>
+ [6 1 4]</br>
+ [5 7 0]]</br>
+ACTION:  (8, 5)</br>
+[[8 2 3]</br>
+ [6 1 0]</br>
+ [5 7 4]]</br>
+ACTION:  (5, 2)</br>
+[[8 2 0]</br>
+ [6 1 3]</br>
+ [5 7 4]]</br>
+ACTION:  (2, 1)</br>
+[[8 0 2]</br>
+ [6 1 3]</br>
+ [5 7 4]]</br>
+ACTION:  (1, 4)</br>
+[[8 1 2]</br>
+ [6 0 3]</br>
+ [5 7 4]]</br>
+ACTION:  (4, 7)</br>
+[[8 1 2]</br>
+ [6 7 3]</br>
+ [5 0 4]]</br>
+ACTION:  (7, 6)</br>
+[[8 1 2]</br>
+ [6 7 3]</br>
+ [0 5 4]]</br>
+ACTION:  (6, 3)</br>
+[[8 1 2]</br>
+ [0 7 3]</br>
+ [6 5 4]]</br>
+ACTION:  (3, 4)</br>
+[[8 1 2]</br>
+ [7 0 3]</br>
+ [6 5 4]]</br>
 
-PROBLEM 2 OUTPUT 
-robot changes kitchen door to opened
-robot moves from living room to kitchen
-robot changes fridge door to opened
-robot changes cupboard door to opened
-robot moves from kitchen to cupboard
-robot takes the glass
-robot moves from cupboard to kitchen
-robot moves from kitchen to living room
-robot gives his object to person
-robot moves from living room to kitchen
-robot moves from kitchen to fridge
-robot takes the soda
-robot moves from fridge to kitchen
-robot changes fridge door to closed
-robot changes cupboard door to closed
-robot moves from kitchen to living room
-robot changes kitchen door to closed
-robot gives his object to glass
+PROBLEM 2 OUTPUT </br>
+robot changes kitchen door to opened</br>
+robot moves from living room to kitchen</br>
+robot changes fridge door to opened</br>
+robot changes cupboard door to opened</br>
+robot moves from kitchen to cupboard</br>
+robot takes the glass</br>
+robot moves from cupboard to kitchen</br>
+robot moves from kitchen to living room</br>
+robot gives his object to person</br>
+robot moves from living room to kitchen</br>
+robot moves from kitchen to fridge</br>
+robot takes the soda</br>
+robot moves from fridge to kitchen</br>
+robot changes fridge door to closed</br>
+robot changes cupboard door to closed</br>
+robot moves from kitchen to living room</br>
+robot changes kitchen door to closed</br>
+robot gives his object to glass</br>
