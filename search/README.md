@@ -1,10 +1,12 @@
 <h1>Assignment1 Search</h1>
 
+<h3>Dependencies</h3>
 To run this program the following python packages are required:
 numpy, argparse.  They can be installed into your python environment with:
 pip install numpy
 pip install argparse
 
+<h3>Running the Program</h3>
 To run the two problems use:
 python assignment1.py puzzle 
 python assignemtn1.py means-end
@@ -14,18 +16,14 @@ An example of the output is given at the bottom of this page for both problems.
 Problem 1:
 Considering this as the initial state,
 
-[4 3 6]
-
-[8 2 7]
-
-[5 1  ]
+[4 3 6]</br>
+[8 2 7]</br>
+[5 1 _]
 
 and this as the goal state,
 
-[8 1 2]
-
-[7   3]
-
+[8 1 2]</br>
+[7 _ 3]</br>
 [6 5 4]
 
 apply the 3 steps of search for problem  solving (as described in Week 2 slides)  
