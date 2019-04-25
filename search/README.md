@@ -1,17 +1,17 @@
-<h1>Assignment1 Search</h1>
+<h1>Assignment One Search</h1>
 
 <h3>Dependencies</h3>
-To run this program the following python packages are required:
-numpy, argparse.  They can be installed into your python environment with:
-pip install numpy
-pip install argparse
+To run this program the following python packages are required:</br>
+numpy, argparse.  They can be installed into your python environment with:</br>
+pip install numpy</br>
+pip install argparse</br>
 
 <h3>Running the Program</h3>
 To run the two problems use:</br>
-python assignment1.py puzzle </br>
-python assignemtn1.py means-end</br>
+<code>python assignment1.py puzzle</code></br>
+<code>python assignemtn1.py means-end</code></br>
 
-An example of the output is given at the bottom of this page for both problems.
+<b>An example of the output is given at the bottom of this page for both problems.</b>
 
 <h3>Problem 1:</h3>
 Considering this as the initial state,
@@ -32,7 +32,7 @@ and indicate the solution path in the  search space.
 Let our word consist of a vector of 9 numbers where 0 is reserved for the empty space.
 
 Let our actions consist of moving the empty space (0) in the four principal directions
-where a movement that would take the empthy space outside of the game world has no effect.
+where a movement that would take the empty space outside of the game world has no effect.
 
 <h3>Problem 2:</h3>
 
