@@ -3,7 +3,7 @@ import json
 import copy
 
 # area constants
-LIVING_ROOM = 'living_room'
+LIVING_ROOM = 'living room'
 KITCHEN = 'kitchen'
 CUPBOARD = 'cupboard'
 FRIDGE = 'fridge'
