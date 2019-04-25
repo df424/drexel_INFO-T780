@@ -13,7 +13,7 @@ python assignemtn1.py means-end
 
 An example of the output is given at the bottom of this page for both problems.
 
-Problem 1:
+<h3>Problem 1:</h3>
 Considering this as the initial state,
 
 [4 3 6]</br>
@@ -34,7 +34,7 @@ Let our word consist of a vector of 9 numbers where 0 is reserved for the empty 
 Let our actions consist of moving the empty space (0) in the four principal directions
 where a movement that would take the empthy space outside of the game world has no effect.
 
-Problem 2:
+<h3>Problem 2:</h3>
 
 You live in a studio with your robot that can move and do 
 chores for you such as bringing you dates from the 
