@@ -1,3 +1,4 @@
+<h1>Assignment1 Search</h1>
 
 To run this program the following python packages are required:
 numpy, argparse.  They can be installed into your python environment with:
