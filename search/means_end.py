@@ -104,7 +104,6 @@ class Take(object):
     def Apply(self, state):
         state[self.taker_entity][HOLDS] = self.target_entity
 
-
 if __name__ == '__main__':
     start_state = {ROBOT:{LOCATION:LIVING_ROOM, HOLDS:NONE},
                    PERSON:{LOCATION:LIVING_ROOM, HOLDS:NONE},
@@ -136,4 +135,8 @@ if __name__ == '__main__':
         ManipulateDoor(ROBOT, FRIDGE_DOOR, [FRIDGE, KITCHEN], CLOSED, OPENED),
         ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], OPENED, CLOSED),
         ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], CLOSED, OPENED),
+        Give(ROBOT, PERSON),
+        Give(ROBOT, GLASS),
+        Take(ROBOT, GLASS),
+        Take(ROBOT, SODA),
     ]
