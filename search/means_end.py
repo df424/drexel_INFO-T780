@@ -1,4 +1,6 @@
 
+import json
+import copy
 
 # area constants
 LIVING_ROOM = 'living_room'
@@ -42,6 +44,9 @@ class Move(object):
         if state[self.entity][HOLDS] != NONE:
             state[state[self.entity][HOLDS]][LOCATION] = self.to_loc
 
+    def __str__(self):
+        return self.entity + " moves from "  + self.from_loc + " to " + self.to_loc
+
 class ManipulateDoor(object):
     def __init__(self, entity, door, locations, from_state, to_state):
         self.entity = entity
@@ -64,6 +69,9 @@ class ManipulateDoor(object):
     
     def Apply(self, state):
         state[self.door] = self.to_state
+
+    def __str__(self):
+        return self.entity + " changes " + self.door + " to " + self.to_state
 
 class Give(object):
     def __init__(self, from_entity, to_entity):
@@ -90,6 +98,9 @@ class Give(object):
         state[self.to_entity][HOLDS] = state[self.from_entity][HOLDS]
         state[self.from_entity][HOLDS] = NONE
 
+    def __str__(self):
+        return self.from_entity + " gives his object to " + self.to_entity
+
 
 class Take(object):
     def __init__(self, taker_entity, target_entity):
@@ -100,43 +111,56 @@ class Take(object):
         # can't take something if we aren't in the same location.
         if state[self.taker_entity][LOCATION] != state[self.target_entity][LOCATION]:
             return False
+
+        return True
         
     def Apply(self, state):
         state[self.taker_entity][HOLDS] = self.target_entity
 
-if __name__ == '__main__':
-    start_state = {ROBOT:{LOCATION:LIVING_ROOM, HOLDS:NONE},
-                   PERSON:{LOCATION:LIVING_ROOM, HOLDS:NONE},
-                   GLASS:{LOCATION:CUPBOARD, HOLDS:NONE},
-                   SODA:{LOCATION:FRIDGE, HOLDS:NONE},
-                   KITCHEN_DOOR:CLOSED,
-                   FRIDGE_DOOR:CLOSED, 
-                   CUPBOARD_DOOR:CLOSED}
+    def __str__(self):
+        return self.taker_entity + " takes the " + self.target_entity
 
-    goal_state =  {ROBOT:{LOCATION:LIVING_ROOM, HOLDS:NONE},
-                   PERSON:{LOCATION:LIVING_ROOM, HOLDS:GLASS},
-                   GLASS:{LOCATION:LIVING_ROOM, HOLDS:SODA},
-                   SODA:{LOCATION:LIVING_ROOM, HOLDS:NONE},
-                   KITCHEN_DOOR:CLOSED,
-                   FRIDGE_DOOR:CLOSED, 
-                   CUPBOARD_DOOR:CLOSED}
+# create all the actions we can do this is a static list that is not to be modified by the agent.
+Actions = [
+    Move(ROBOT, KITCHEN, LIVING_ROOM, KITCHEN_DOOR),
+    Move(ROBOT, LIVING_ROOM, KITCHEN, KITCHEN_DOOR),
+    Move(ROBOT, KITCHEN, FRIDGE, FRIDGE_DOOR),
+    Move(ROBOT, FRIDGE, KITCHEN, FRIDGE_DOOR),
+    Move(ROBOT, CUPBOARD, KITCHEN, CUPBOARD_DOOR),
+    Move(ROBOT, KITCHEN, CUPBOARD, CUPBOARD_DOOR),
+    ManipulateDoor(ROBOT, KITCHEN_DOOR, [KITCHEN, LIVING_ROOM], OPENED, CLOSED),
+    ManipulateDoor(ROBOT, KITCHEN_DOOR, [KITCHEN, LIVING_ROOM], CLOSED, OPENED),
+    ManipulateDoor(ROBOT, FRIDGE_DOOR, [FRIDGE, KITCHEN], OPENED, CLOSED),
+    ManipulateDoor(ROBOT, FRIDGE_DOOR, [FRIDGE, KITCHEN], CLOSED, OPENED),
+    ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], OPENED, CLOSED),
+    ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], CLOSED, OPENED),
+    Give(ROBOT, PERSON),
+    Give(ROBOT, GLASS),
+    Take(ROBOT, GLASS),
+    Take(ROBOT, SODA),
+]
 
-    # create all the actions we can do...
-    Actions = [
-        Move(ROBOT, KITCHEN, LIVING_ROOM, KITCHEN_DOOR),
-        Move(ROBOT, LIVING_ROOM, KITCHEN, KITCHEN_DOOR),
-        Move(ROBOT, KITCHEN, FRIDGE, FRIDGE_DOOR),
-        Move(ROBOT, FRIDGE, KITCHEN, FRIDGE_DOOR),
-        Move(ROBOT, CUPBOARD, KITCHEN, CUPBOARD_DOOR),
-        Move(ROBOT, KITCHEN, CUPBOARD, CUPBOARD_DOOR),
-        ManipulateDoor(ROBOT, KITCHEN_DOOR, [KITCHEN, LIVING_ROOM], OPENED, CLOSED),
-        ManipulateDoor(ROBOT, KITCHEN_DOOR, [KITCHEN, LIVING_ROOM], CLOSED, OPENED),
-        ManipulateDoor(ROBOT, FRIDGE_DOOR, [FRIDGE, KITCHEN], OPENED, CLOSED),
-        ManipulateDoor(ROBOT, FRIDGE_DOOR, [FRIDGE, KITCHEN], CLOSED, OPENED),
-        ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], OPENED, CLOSED),
-        ManipulateDoor(ROBOT, CUPBOARD_DOOR, [CUPBOARD, KITCHEN], CLOSED, OPENED),
-        Give(ROBOT, PERSON),
-        Give(ROBOT, GLASS),
-        Take(ROBOT, GLASS),
-        Take(ROBOT, SODA),
-    ]
+class MeansEndState(object):
+    def __init__(self, state):
+        self.state = copy.deepcopy(state)
+        self.hash = self.getHash()
+
+    def equals(self, other):
+        return self.hash == other.hash
+
+    def getMoves(self):
+        rv = []
+        for a in Actions:
+            if a.PreconditionsSatisifed(self.state):
+                rv.append(a)
+        return rv
+
+    def applyMove(self, move):
+        rv = MeansEndState(self.state)
+        move.Apply(rv.state)
+        # recompute the hash.
+        rv.hash = rv.getHash()
+        return rv
+    
+    def getHash(self):
+        return json.dumps(self.state)
