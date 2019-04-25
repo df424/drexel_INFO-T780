@@ -12,19 +12,26 @@ An example of the output is given at the bottom of this page for both problems.
 
 Problem 1:
 Considering this as the initial state,
+
 [4 3 6]
+
 [8 2 7]
+
 [5 1  ]
 
 and this as the goal state,
+
 [8 1 2]
+
 [7   3]
+
 [6 5 4]
 
 apply the 3 steps of search for problem  solving (as described in Week 2 slides)  
 and indicate the solution path in the  search space.
 
 Let our word consist of a vector of 9 numbers where 0 is reserved for the empty space.
+
 Let our actions consist of moving the empty space (0) in the four principal directions
 where a movement that would take the empthy space outside of the game world has no effect.
 
