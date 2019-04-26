@@ -3,8 +3,8 @@
 <h3>Dependencies</h3>
 To run this program the following python packages are required:</br>
 numpy, argparse.  They can be installed into your python environment with:</br>
-pip install numpy</br>
-pip install argparse</br>
+<code>pip install numpy</code></br>
+<code>pip install argparse</code></br>
 
 <h3>Running the Program</h3>
 To run the two problems use:</br>
