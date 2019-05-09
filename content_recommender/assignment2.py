@@ -8,7 +8,7 @@ ZIPPED_DATA_PATH = 'content_recommender/data/imdb_data.zip'
 
 #%% Clean Data
 cd.unzipData(ZIPPED_DATA_PATH)
-cd.findAllGenres(EXTRACTED_DATA_PATH)
+cd.loadData(EXTRACTED_DATA_PATH)
 
 #%% Cleanup files
 cd.cleanupFile(EXTRACTED_DATA_PATH)
