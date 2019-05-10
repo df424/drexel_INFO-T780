@@ -1,5 +1,6 @@
 
 from zipfile import ZipFile
+from sklearn.preprocessing import scale
 import os
 import csv
 import numpy as np
@@ -32,11 +33,11 @@ def findAllGenres(path):
 
 # this function and enum converts the rating into a number between 0 and 4
 # this is an ordinal feature.
-VERY_HIGH_RATING = 4
-HIGH_RATING = 3
-AVERAGE_RATING = 2
-LOW_RATING = 1
-VERY_LOW_RATING = 0
+VERY_HIGH_RATING = 1.0
+HIGH_RATING = 0.75
+AVERAGE_RATING = 0.5
+LOW_RATING = 0.25
+VERY_LOW_RATING = 0.0
 def convertRatingToEnum(rating):
     if(rating > 950):
         return VERY_HIGH_RATING
@@ -50,10 +51,10 @@ def convertRatingToEnum(rating):
 
 # this function and enum converts the length of the movie into a number 
 # between 0 and 4.
-VERY_LONG_RUNTIME = 4
-LONG_RUNTIME = 3
-AVERAGE_RUNTIME = 2
-SHORT_RUNTIME = 1
+VERY_LONG_RUNTIME = 1.0
+LONG_RUNTIME = 0.75
+AVERAGE_RUNTIME = 0.5
+SHORT_RUNTIME = 0.25
 VERY_SHORT_RUNTIME = 0
 def convertLengthToEnum(length):
     if(length > 180):
@@ -67,9 +68,9 @@ def convertLengthToEnum(length):
     return AVERAGE_RUNTIME
 
 # this function converts the year into an enum.
-NEW_RELEASE = 2
-NOSTALGIC = 1
-CLASSIC = 0
+NEW_RELEASE = 1.0
+NOSTALGIC = 0.5
+CLASSIC = 0.0
 def convertYearToEnum(year):
     if year > 2015:
         return NEW_RELEASE
@@ -121,6 +122,10 @@ def loadData(path):
         actor_offset = director_offset+len(directors)
         year_offset = actor_offset + len(actors)
         runtime_offset = year_offset + 1
+        rating_offset = runtime_offset + 1
+        votes_offset = rating_offset + 1
+        revenue_offset = votes_offset + 1
+        metascore_offset = revenue_offset + 1
 
         # now actually load the data in a usable form.
         for i, row in enumerate(data):
@@ -142,5 +147,20 @@ def loadData(path):
 
             # process the movie's runtime.
             rv[i,runtime_offset] = convertLengthToEnum(int(row[7]))
-            print(rv[i])
+
+            # the rest of the data is actually ordinal so we just use it as is.
+            rv[i, rating_offset] = float(row[8])
+            rv[i, votes_offset] = float(row[9])
+            try:
+                rv[i, revenue_offset] = float(row[10])
+            except:
+                rv[i, revenue_offset] = 0
+
+            try:
+                rv[i, metascore_offset] = float(row[11])
+            except:
+                rv[i, metascore_offset] = 0
+
+    return scale(rv, axis=0, with_mean=True, with_std=True)
+
  
