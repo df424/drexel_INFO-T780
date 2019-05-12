@@ -40,13 +40,13 @@ LOW_RATING = 0.25
 VERY_LOW_RATING = 0.0
 def convertRatingToEnum(rating):
     if(rating > 950):
-        return VERY_HIGH_RATING
-    if(rating > 800):
-        return HIGH_RATING
-    if(rating < 50):
         return VERY_LOW_RATING
+    if(rating > 800):
+        return LOW_RATING 
+    if(rating < 50):
+        return VERY_HIGH_RATING
     if(rating < 200):
-        return LOW_RATING
+        return HIGH_RATING
     return AVERAGE_RATING
 
 # this function and enum converts the length of the movie into a number 
@@ -80,9 +80,8 @@ def convertYearToEnum(year):
 
 def loadData(path):
     genres = {}
-    directors = {}
-    actors = {}
     row_count = 0
+    Y = []
 
     with open(path, 'r') as f:
         data = csv.reader(f, skipinitialspace=True)
@@ -91,6 +90,9 @@ def loadData(path):
 
         # on our first pass we need to count the actors and genres and convert them to numbers.
         for row in data:    
+            # Append the movie name to the Y vector so we can look it up later.
+            Y.append(row[1])
+
             # keep track of number of rows so we can allocate data.
             row_count = row_count + 1
             # process the genres...
@@ -98,19 +100,10 @@ def loadData(path):
             for g in row_genres:
                 if g not in genres:
                     genres[g] = len(genres)
-            
-            # process the director.
-            if row[4] not in directors:
-                directors[row[4]] = len(directors)
 
-            # process actors.
-            row_actors = row[5].split(',')
-            for a in row_actors:
-                if a not in actors:
-                    actors[a] = len(actors)
-
+           
         # now we have the necessary meta data to create numeric arrays.
-        rv = np.zeros((row_count, 7 + len(genres) + len(directors) + len(actors)))
+        X = np.zeros((row_count, 7 + len(genres)))
 
         # reset csv reader.
         f.seek(0)
@@ -118,9 +111,7 @@ def loadData(path):
 
         # calculate and cache offsets.
         genre_offset = 1
-        director_offset = genre_offset+len(genres)
-        actor_offset = director_offset+len(directors)
-        year_offset = actor_offset + len(actors)
+        year_offset = genre_offset + len(genres)
         runtime_offset = year_offset + 1
         rating_offset = runtime_offset + 1
         votes_offset = rating_offset + 1
@@ -129,38 +120,32 @@ def loadData(path):
 
         # now actually load the data in a usable form.
         for i, row in enumerate(data):
-            rv[i,0] = convertRatingToEnum(int(row[0]))
+            X[i,0] = convertRatingToEnum(int(row[0]))
 
             # process the genres into a vector of booleans
             for g in row[2].split(','):
-                rv[i,genre_offset+genres[g]] = 1
-
-            # process the director into a one hot vector
-            rv[i,director_offset+directors[row[4]]] = 1
-
-            # process the actors into a vector of booleans
-            for a in row[5].split(','):
-                rv[i,actor_offset + actors[a]] = 1
+                X[i,genre_offset+genres[g]] = 1
 
             # process the movie's year.
-            rv[i,year_offset] = convertYearToEnum(int(row[6]))
+            X[i,year_offset] = convertYearToEnum(int(row[6]))
 
             # process the movie's runtime.
-            rv[i,runtime_offset] = convertLengthToEnum(int(row[7]))
+            X[i,runtime_offset] = convertLengthToEnum(int(row[7]))
 
             # the rest of the data is actually ordinal so we just use it as is.
-            rv[i, rating_offset] = float(row[8])
-            rv[i, votes_offset] = float(row[9])
+            X[i, rating_offset] = float(row[8])
+            X[i, votes_offset] = float(row[9])
             try:
-                rv[i, revenue_offset] = float(row[10])
+                X[i, revenue_offset] = float(row[10])
             except:
-                rv[i, revenue_offset] = 0
+                X[i, revenue_offset] = 0
 
             try:
-                rv[i, metascore_offset] = float(row[11])
+                X[i, metascore_offset] = float(row[11])
             except:
-                rv[i, metascore_offset] = 0
-
-    return scale(rv, axis=0, with_mean=True, with_std=True)
+                X[i, metascore_offset] = 0
+    # normalize ordinal data.
+    #rv[:,rating_offset:] = scale(rv[:,rating_offset:], axis=0, with_mean=True, with_std=True)
+    return (X,Y)
 
  
