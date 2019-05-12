@@ -1,11 +1,18 @@
 
 import numpy as np
 
+def genreCompare(X, x):
+    # if x is 0 then we don't care about any match at all.
+    if x == 0:
+        return np.zeros(X.shape)
+    # otherwise do the binary compare..
+    return (X == x).astype(int)
+
 def binaryCompare(X, x):
     return (X == x).astype(int)
 
 def absDifference(X, x):
-    return np.abs(X-x)
+    return 1-np.abs(X-x)/X.max()
 
 class MovieRecommenderSystem(object):
     # What do i actually need to make the recommendation....
@@ -31,8 +38,6 @@ class MovieRecommenderSystem(object):
 
         max_vals = np.argpartition(similarity_factor, -n_recommendations)[-n_recommendations:]
         max_vals = max_vals[np.argsort(-similarity_factor[max_vals])]
-        print(max_vals)
-        print(similarity_factor[max_vals])
         print([self.Y[v] for v in max_vals])
 
         

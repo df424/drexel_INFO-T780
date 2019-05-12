@@ -4,6 +4,7 @@ from sklearn.preprocessing import scale
 import os
 import csv
 import numpy as np
+import collections
 
 def unzipData(path):
     with ZipFile(path, 'r') as zipObj:
@@ -13,73 +14,74 @@ def cleanupFile(path):
     if os.path.exists(path):
         os.remove(path)
 
-def findAllGenres(path):
-    # store genres in a set
-    all_genres = set([])
+ratingDict = collections.OrderedDict([
+    ('Very High Rating (>9)',(9,4)),
+    ('High Rating (8-9)',(8,3)),
+    ('Average Rating (6-8)',(6,2)),
+    ('Low Rating (4-6)',(4,1)),
+    ('Very Low Rating (<4)',(0,0)),
+])
 
-    # load csv data.
-    with open(path, 'r') as f:
-        data = csv.reader(f.readlines(), skipinitialspace=True)
-    # skip csv header.
-    next(data)
+lengthDict = collections.OrderedDict([
+    ('Very Long (>3h)',(180,4)),
+    ('Long (2-3h)',(120,3)),
+    ('Average (1.5-2h)',(90,2)),
+    ('Short (1-1.5h)',(60,1)),
+    ('Very Short (0-1h)',(0,0)),
+])
 
-    # for each row of data.
-    for row in data:
-        # get a list of the genres.
-        genres = row[2].split(',')
-        [all_genres.add(x) for x in genres]
+releaseDateDict = collections.OrderedDict([
+    ('New Release (>2016)',(2016,2)),
+    ('nostalgic (2008-2016)',(2008,1)),
+    ('classic (<2008)',(0,0)),
+])
 
-    print(all_genres)
+ratingCountDict = collections.OrderedDict([
+    ('Lots of Ratings (>100k)',(100000,2)),
+    ('Some Ratings (10k-100k)',(10000,1)),
+    ('Few Ratings (<10k)',(0,0)),
+])
 
-# this function and enum converts the rating into a number between 0 and 4
-# this is an ordinal feature.
-VERY_HIGH_RATING = 1.0
-HIGH_RATING = 0.75
-AVERAGE_RATING = 0.5
-LOW_RATING = 0.25
-VERY_LOW_RATING = 0.0
-def convertRatingToEnum(rating):
-    if(rating > 950):
-        return VERY_LOW_RATING
-    if(rating > 800):
-        return LOW_RATING 
-    if(rating < 50):
-        return VERY_HIGH_RATING
-    if(rating < 200):
-        return HIGH_RATING
-    return AVERAGE_RATING
+revenueDict = collections.OrderedDict([
+    ('Blockbuster (>300m)',(300,4)),
+    ('High Revenue (100-300m)',(100,3)),
+    ('Average Revenue (50-100m)',(50,2)),
+    ('Low Revenue (5-50m)',(5,1)),
+    ('Epic Failure (0-5m)',(0,0)),
+])
 
-# this function and enum converts the length of the movie into a number 
-# between 0 and 4.
-VERY_LONG_RUNTIME = 1.0
-LONG_RUNTIME = 0.75
-AVERAGE_RUNTIME = 0.5
-SHORT_RUNTIME = 0.25
-VERY_SHORT_RUNTIME = 0
-def convertLengthToEnum(length):
-    if(length > 180):
-        return VERY_LONG_RUNTIME
-    if(length > 160):
-        return LONG_RUNTIME 
-    if(length < 60):
-        return VERY_SHORT_RUNTIME 
-    if(length < 120):
-        return SHORT_RUNTIME
-    return AVERAGE_RUNTIME
+metaScoreDict = collections.OrderedDict([
+    ('Very High (>90)',(90,4)),
+    ('High (70-90)',(70,3)),
+    ('Average (50-70)',(50,2)),
+    ('Low (30-50)',(30,1)),
+    ('Very Low (<30)',(0,0)),
+])
 
-# this function converts the year into an enum.
-NEW_RELEASE = 1.0
-NOSTALGIC = 0.5
-CLASSIC = 0.0
-def convertYearToEnum(year):
-    if year > 2015:
-        return NEW_RELEASE
-    if year > 1990:
-        return NOSTALGIC
-    return CLASSIC
+genreDict = {}
+
+# convert a value to its new ordinal value given the value and a data dictionary.
+def convertValue(data, value):
+    for v in data.values():
+        if value >= v[0]:
+            return v[1]
+    
+def selectionToInputVector(genres, release_date, length, rating, num_ratings, revenue, meta_score):
+    rv = np.zeros(6+len(genreDict))
+
+    # fill in genres...
+    for genre in genres:
+        rv[genreDict[genre]] = 1
+
+    rv[len(genreDict)] = releaseDateDict[release_date][1]
+    rv[len(genreDict)+1] = lengthDict[length][1]
+    rv[len(genreDict)+2] = ratingDict[rating][1]
+    rv[len(genreDict)+3] = ratingCountDict[num_ratings][1]
+    rv[len(genreDict)+4] = revenueDict[revenue][1]
+    rv[len(genreDict)+5] = metaScoreDict[meta_score][1]
+    return rv
 
 def loadData(path):
-    genres = {}
     row_count = 0
     Y = []
 
@@ -98,20 +100,20 @@ def loadData(path):
             # process the genres...
             row_genres = row[2].split(',')
             for g in row_genres:
-                if g not in genres:
-                    genres[g] = len(genres)
+                if g not in genreDict:
+                    genreDict[g] = len(genreDict)
 
            
         # now we have the necessary meta data to create numeric arrays.
-        X = np.zeros((row_count, 7 + len(genres)))
+        X = np.zeros((row_count, 6 + len(genreDict)))
 
         # reset csv reader.
         f.seek(0)
         next(data)
 
         # calculate and cache offsets.
-        genre_offset = 1
-        year_offset = genre_offset + len(genres)
+        genre_offset = 0
+        year_offset = genre_offset + len(genreDict)
         runtime_offset = year_offset + 1
         rating_offset = runtime_offset + 1
         votes_offset = rating_offset + 1
@@ -120,32 +122,29 @@ def loadData(path):
 
         # now actually load the data in a usable form.
         for i, row in enumerate(data):
-            X[i,0] = convertRatingToEnum(int(row[0]))
-
             # process the genres into a vector of booleans
             for g in row[2].split(','):
-                X[i,genre_offset+genres[g]] = 1
+                X[i,genre_offset+genreDict[g]] = 1
 
             # process the movie's year.
-            X[i,year_offset] = convertYearToEnum(int(row[6]))
+            X[i,year_offset] = convertValue(releaseDateDict, int(row[6]))
 
             # process the movie's runtime.
-            X[i,runtime_offset] = convertLengthToEnum(int(row[7]))
+            X[i,runtime_offset] = convertValue(lengthDict ,int(row[7]))
 
             # the rest of the data is actually ordinal so we just use it as is.
-            X[i, rating_offset] = float(row[8])
-            X[i, votes_offset] = float(row[9])
+            X[i, rating_offset] = convertValue(ratingDict, float(row[8]))
+            X[i, votes_offset] = convertValue(ratingCountDict, float(row[9]))
             try:
-                X[i, revenue_offset] = float(row[10])
+                X[i, revenue_offset] = convertValue(revenueDict, float(row[10]))
             except:
-                X[i, revenue_offset] = 0
+                X[i, revenue_offset] = convertValue(revenueDict, 0)
 
             try:
-                X[i, metascore_offset] = float(row[11])
+                X[i, metascore_offset] = convertValue(metaScoreDict, float(row[11]))
             except:
-                X[i, metascore_offset] = 0
-    # normalize ordinal data.
-    #rv[:,rating_offset:] = scale(rv[:,rating_offset:], axis=0, with_mean=True, with_std=True)
+                X[i, metascore_offset] = convertValue(metaScoreDict, 0)
+
     return (X,Y)
 
  
