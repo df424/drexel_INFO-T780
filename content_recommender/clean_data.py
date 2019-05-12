@@ -1,6 +1,5 @@
 
 from zipfile import ZipFile
-from sklearn.preprocessing import scale
 import os
 import csv
 import numpy as np
@@ -92,8 +91,8 @@ def loadData(path):
 
         # on our first pass we need to count the actors and genres and convert them to numbers.
         for row in data:    
-            # Append the movie name to the Y vector so we can look it up later.
-            Y.append(row[1])
+            # Append the raw vector so we can look it up laters.
+            Y.append(row)
 
             # keep track of number of rows so we can allocate data.
             row_count = row_count + 1
