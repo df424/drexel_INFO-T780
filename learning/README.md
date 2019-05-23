@@ -4,7 +4,7 @@
 <ol>
 <li><a href="https://github.com/df424/drexel_INFO-T780/blob/master/learning/decision_trees.ipynb">Decision Trees</a></li>
 <li><a href="https://github.com/df424/drexel_INFO-T780/blob/master/learning/keras_tut.ipynb">Keras Tutorial</a></li>
-<li><a>Second Dataset</a></li>
+<li><a href="https://github.com/df424/drexel_INFO-T780/blob/master/learning/second_dataset.ipynb">Second Dataset</a></li>
 </ol>
 
 <p><i>Note: license.txt is included because some of the code from the keras tutorial was copied and keras falls under the MIT license.</i></p>
