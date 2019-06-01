@@ -6,4 +6,5 @@ Homework for Drexel University INFO-T780
   <li><a href="https://github.com/df424/drexel_INFO-T780/tree/master/search">Assignment 1 - State Space Search<a></li>
   <li><a href="https://github.com/df424/drexel_INFO-T780/tree/master/content_recommender">Assignment 2 - Content Based Recommender</a></li>
   <li><a href="https://github.com/df424/drexel_INFO-T780/tree/master/learning">Assignment 3 - Machine Learning</a></li>
+  <li><a href="https://github.com/df424/drexel_INFO-T780/tree/master/nlp">Assignment 4 - NLP</a></li>
 </ol>
