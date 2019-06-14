@@ -4,27 +4,41 @@ import numpy as np
 import scipy.misc
 import sys
 from preprocess import scaleImg, toGrayScale
-from dqn import createModel
+from dqn import dqnAgent
 
 def main():
     env = gym.make("Pong-v0")
-    observation = env.reset()
-    done = False
+    agent = dqnAgent(6) 
 
-    dqn_model = createModel(3)
+    for i in range(1000000):
+        print(i)
+        done = False
+        current_observation = env.reset()
+        current_observation = toGrayScale(scaleImg(current_observation[34:194])).reshape((-1, 88, 88, 1))
+        while not done:
+            #if i % 100 == 0:
+            env.render()
 
-    while not done:
-        env.render()
-        observation, reward, done, info = env.step(3)
+            # act...
+            a = agent.act(current_observation)
 
-        # reduce the observation to the gameplay area of the screen and preprocess the image...
-        observation = toGrayScale(scaleImg(observation[34:194])).reshape((-1, 88, 88, 1))
-        dqn_model.fit(observation, np.array([[0.5, 0.5, 0.5]]), epochs=1)
+            # update environment...
+            next_observation, reward, done, info = env.step(a)
 
-        # calculate the location of the ball...
-        #core_screen = core_screen - 236
-        #ball_pix = np.argwhere(np.abs(core_screen).sum(axis=2) == 0)
-        #ball_pix.mean(axis=0)
+            # process the observation
+            next_observation = toGrayScale(scaleImg(next_observation[34:194])).reshape((-1, 88, 88, 1))
+
+            # update the agent's memory.
+            agent.remember(current_observation, a, reward, next_observation, done)
+
+            # save the observation for the next state.
+            current_observation = next_observation
+
+            # calculate the location of the ball...
+            #core_screen = core_screen - 236
+            #ball_pix = np.argwhere(np.abs(core_screen).sum(axis=2) == 0)
+            #ball_pix.mean(axis=0)
+        agent.replay(32)
 
 if __name__=='__main__':
     main()
