@@ -1,9 +1,13 @@
 
-import cv2 as cv
 import numpy as np
+from skimage.transform import resize
+from skimage import color
 
 def scaleImg(img):
-    return cv.resize(img, dsize=(88,88), interpolation=cv.INTER_CUBIC)
+    return resize(img, (88, 88), anti_aliasing=True)
+
+def toGrayScale(img):
+    return color.rgb2gray(img)
 
 
 if __name__=='__main__':
